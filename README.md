@@ -1,4 +1,4 @@
-# 哈小深每日上报
+# HITSZ哈小深每日上报
 ======
 <br>
 需求`schedule`和`requests`库。
