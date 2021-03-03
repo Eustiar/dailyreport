@@ -1,5 +1,4 @@
-# dailyreport
-哈小深每日上报
+# 哈小深每日上报
 ======
 需求`schedule`和`requests`库。
 <br><br>
