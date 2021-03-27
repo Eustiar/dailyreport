@@ -6,3 +6,5 @@
 使用你的学号和密码替换userdata文件中的`username` 和 `password`
 <br><br>
 `python dailyreport_xg.py` 即可，配合tmux或者supervisor等使用更佳。
+<br><br>
+可以自行配置yagmail、wxpusher等库通过邮件或微信通知自己填报是否完成。
