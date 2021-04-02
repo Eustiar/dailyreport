@@ -7,7 +7,8 @@ import requests
 import datetime
 import schedule
 import re
-import yagmail
+import time
+# import yagmail
 
 sess = requests.session()
 login_url = 'http://xgsm.hitsz.edu.cn/zhxy-xgzs/xg_mobile/xsHome'
@@ -19,8 +20,8 @@ with open('userdata', 'r') as f:
     data = f.readlines()
     username = data[0].strip()
     password = data[1].strip()
-    email_username = data[2].strip()
-    email_password = data[3].strip()
+    # email_username = data[2].strip()
+    # email_password = data[3].strip()
 
 def login():
     res = sess.get(login_url, headers=ua)
@@ -39,18 +40,17 @@ def save_log(data_log):
     with open(log_path, 'a+') as f:
         f.write('\n' + str(datetime.datetime.now()) + '\n\n' + data_log + '\n')
 
-def send_email(text, host='smtp.126.com', target_email = 'eustiar@qq.com'):
-    yag = yagmail.SMTP(user=email_username, password=email_password, host=host)
-    contents = [text]
-    yag.send(target_email, 'subject', contents)
+# def send_email(text, host='smtp.126.com', target_email = 'eustiar@qq.com'):
+#     yag = yagmail.SMTP(user=email_username, password=email_password, host=host)
+#     contents = [text]
+#     yag.send(target_email, 'daily report', contents)
 
 def work_once():
     if not login():
-        send_email('Login failed')
+        # send_email('Login failed')
         print('Login failed')
         exit()
     res = sess.post(add_url, headers=ua)
-    # print(res.text)
     module = res.json()['module']
     edit_url = 'http://xgsm.hitsz.edu.cn/zhxy-xgzs/xg_mobile/xs/saveYqxx'
     formdata = {'info': '{"model":{"id":"' + module +
@@ -62,18 +62,19 @@ def work_once():
                         '"gpsxx":"","sfjcqthbwhry":"0","sfjcqthbwhrybz":"","tcjtfsbz":""}}'}
     res = sess.post(edit_url, headers=ua, data=formdata)
     if res.json()['isSuccess']:
-        send_email('Add success')
+        # send_email('Add success')
         save_log('Add success')
     else:
-        send_email('Add failed')
+        # send_email('Add failed')
         save_log('Add failed')
 
 
 def work_schedule():
     schedule.clear()
-    schedule.every(1).days.do(work_once)
+    schedule.every().day.at("09:20").do(work_once)
     while True:
         schedule.run_pending()
+        time.sleep(5)
 
 if __name__ == '__main__':
     work_once()
