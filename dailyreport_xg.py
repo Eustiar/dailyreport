@@ -25,6 +25,8 @@ with open('userdata', 'r') as f:
 
 def login():
     res = sess.get(login_url, headers=ua)
+    if '每日上报' in res. text:
+        return True
     lt = re.findall('\"lt\" value=\"(.+)\"', res.text)[0]
     execution = re.findall('\"execution\" value=\"(.+)\"', res.text)[0]
     login_data = {'username': username, 'password': password, 'lt': lt, 'execution': execution, '_eventId': 'submit',
